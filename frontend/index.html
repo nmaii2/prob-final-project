@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Monte Carlo Gamble Game 🎲</title>
+
+  <!-- Google Font: Inter (clean modern finance look) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main UI stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <h1 class="game-title">🎲 Monte Carlo Gamble Game</h1>
+
+    <div class="grid-layout">
+
+      <!-- ===================================== -->
+      <!-- LEFT PANEL — Controls -->
+      <!-- ===================================== -->
+      <section class="card control-panel">
+
+        <h2>Portfolio Setup</h2>
+
+        <!-- LOW -->
+        <label>
+          Low-Risk Stock
+          <span id="lowLabel" class="slider-label">33%</span>
+        </label>
+        <input id="lowSlider" type="range" min="0" max="100" value="33" />
+
+        <!-- MED -->
+        <label>
+          Medium-Risk Stock
+          <span id="medLabel" class="slider-label">33%</span>
+        </label>
+        <input id="medSlider" type="range" min="0" max="100" value="33" />
+
+        <!-- HIGH -->
+        <label>
+          High-Risk Stock
+          <span id="highLabel" class="slider-label">34%</span>
+        </label>
+        <input id="highSlider" type="range" min="0" max="100" value="34" />
+
+        <div class="divider"></div>
+
+        <!-- Horizon -->
+        <label for="horizonSelect">Time Horizon</label>
+        <select id="horizonSelect">
+          <option value="1">1 Year</option>
+          <option value="5">5 Years</option>
+          <option value="10">10 Years</option>
+        </select>
+
+        <div class="divider"></div>
+
+        <!-- Main Button -->
+        <button id="gambleBtn" class="btn-primary">🎲 GAMBLE!</button>
+
+        <p id="statusText" class="status-line"></p>
+      </section>
+
+
+
+      <!-- ===================================== -->
+      <!-- RIGHT PANEL — CHARTS AND METRICS -->
+      <!-- ===================================== -->
+      <div class="right-panel">
+
+        <!-- TIME SERIES CHART -->
+        <section class="card">
+          <h2>📈 Simulation Time-Series</h2>
+          <canvas id="timeSeriesChart"></canvas>
+        </section>
+
+        <!-- HISTOGRAM -->
+        <section class="card">
+          <h2>📊 Ending Wealth Distribution</h2>
+          <canvas id="histChart"></canvas>
+        </section>
+
+        <!-- METRICS -->
+        <section class="card metric-panel">
+          <h2>📘 Simulation Metrics</h2>
+
+          <div class="metrics-grid">
+            <div>
+              <strong>Expected Wealth</strong>
+              <div id="expected">—</div>
+            </div>
+
+            <div>
+              <strong>Probability of Loss</strong>
+              <div id="probLoss">—</div>
+            </div>
+
+            <div>
+              <strong>VaR 5%</strong>
+              <div id="var5">—</div>
+            </div>
+
+            <div>
+              <strong>Probability of Ruin</strong>
+              <div id="probRuin">—</div>
+            </div>
+          </div>
+        </section>
+
+      </div> <!-- end right column -->
+
+    </div> <!-- end grid -->
+
+  </div> <!-- end container -->
+
+
+
+  <!-- ===================================================== -->
+  <!-- AUDIO FILES (used by game.js) -->
+  <!-- ===================================================== -->
+  <!-- These are only references — the JS loads them manually -->
+  <audio id="ambient-sound" src="assets/sounds/ambient-loop.mp3"></audio>
+
+
+
+  <!-- ===================================================== -->
+  <!-- JS SCRIPTS -->
+  <!-- ===================================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="charts.js"></script>
+  <script src="sound.js"></script>
+  <script src="game.js"></script>
+
+</body>
+</html>
