@@ -8,101 +8,113 @@
     --bg-body: #F4F4F9;
     --bg-card: #FFFFFF;
     --bg-panel: #FAFAFD;
-
+  
     --text-main: #1F2937;
     --text-muted: #6B7280;
-
+  
     --border-light: #E5E7EB;
     --border-medium: #D1D5DB;
-
+  
     --accent-blue: #3B82F6;
     --accent-purple: #6366F1;
     --accent-green: #22C55E;
     --accent-red: #EF4444;
-
+  
     --radius: 12px;
     --shadow-soft: 0 4px 14px rgba(0,0,0,0.08);
     --shadow-strong: 0 8px 22px rgba(0,0,0,0.12);
-}
-
-/* ---------- GLOBAL ---------- */
-* {
+  }
+  
+  /* ---------- GLOBAL ---------- */
+  * {
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-}
-
-body {
+  }
+  
+  body {
     margin: 0;
     background: var(--bg-body);
     color: var(--text-main);
-}
-
-.container {
+  }
+  
+  .container {
     max-width: 1150px;
     margin: 40px auto;
     padding: 20px;
-}
-
-/* ---------- TITLES ---------- */
-h1 {
+  }
+  
+  /* ---------- TITLES ---------- */
+  h1 {
     text-align: center;
     font-size: 38px;
     margin-bottom: 30px;
     font-weight: 800;
     color: var(--accent-purple);
-}
-
-h2 {
+  }
+  
+  /* optional: target the class too (you use class="game-title") */
+  .game-title {
+    letter-spacing: 0.02em;
+  }
+  
+  h2 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 14px;
     color: var(--text-main);
-}
-
-/* ---------- GRID LAYOUT ---------- */
-.grid-layout {
+  }
+  
+  /* ---------- GRID LAYOUT ---------- */
+  .grid-layout {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 22px;
-}
-
-@media (max-width: 900px) {
+  }
+  
+  @media (max-width: 900px) {
     .grid-layout {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
-}
-
-/* ---------- CARD PANELS ---------- */
-.card {
+  }
+  
+  /* Right-hand side container (charts + metrics) */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* ---------- CARD PANELS ---------- */
+  .card {
     background: var(--bg-card);
     padding: 22px;
     border-radius: var(--radius);
     border: 1px solid var(--border-light);
     box-shadow: var(--shadow-soft);
-}
-
-/* ---------- CONTROL PANEL ---------- */
-.control-panel label {
+  }
+  
+  /* ---------- CONTROL PANEL ---------- */
+  .control-panel label {
     display: block;
     margin-top: 12px;
     font-weight: 600;
     font-size: 15px;
-}
-
-.slider-label {
+  }
+  
+  .slider-label {
     float: right;
     color: var(--accent-blue);
     font-weight: 700;
-}
-
-.divider {
+  }
+  
+  .divider {
     height: 1px;
     background: var(--border-light);
     margin: 18px 0;
-}
-
-/* ---------- SLIDERS ---------- */
-input[type="range"] {
+  }
+  
+  /* ---------- SLIDERS ---------- */
+  input[type="range"] {
     width: 100%;
     margin-top: 6px;
     height: 6px;
@@ -110,9 +122,9 @@ input[type="range"] {
     background: #E0E7FF;
     appearance: none;
     outline: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     width: 18px;
     height: 18px;
@@ -121,10 +133,21 @@ input[type="range"]::-webkit-slider-thumb {
     border: 2px solid #ffffff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     cursor: pointer;
-}
-
-/* ---------- SELECT DROPDOWN ---------- */
-select {
+  }
+  
+  /* Firefox thumb */
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-purple);
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+  
+  /* ---------- SELECT DROPDOWN ---------- */
+  select {
     width: 100%;
     padding: 10px 12px;
     border-radius: var(--radius);
@@ -132,10 +155,10 @@ select {
     background: var(--bg-panel);
     color: var(--text-main);
     font-size: 15px;
-}
-
-/* ---------- BUTTONS ---------- */
-.btn-primary {
+  }
+  
+  /* ---------- BUTTONS ---------- */
+  .btn-primary {
     width: 100%;
     padding: 14px 16px;
     border-radius: var(--radius);
@@ -147,63 +170,64 @@ select {
     color: white;
     transition: 0.2s ease;
     margin-top: 10px;
-}
-
-.btn-primary:hover {
+  }
+  
+  .btn-primary:hover {
     transform: scale(1.03);
     box-shadow: var(--shadow-strong);
-}
-
-/* ---------- STATUS TEXT ---------- */
-.status-line {
+  }
+  
+  /* ---------- STATUS TEXT ---------- */
+  .status-line {
     margin-top: 10px;
     font-size: 14px;
     color: var(--text-muted);
-}
-
-/* ---------- METRICS PANEL ---------- */
-.metrics-grid {
+  }
+  
+  /* ---------- METRICS PANEL ---------- */
+  .metrics-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 14px;
-}
-
-.metrics-grid > div {
+  }
+  
+  .metrics-grid > div {
     background: var(--bg-panel);
     padding: 14px;
     border-radius: var(--radius);
     border: 1px solid var(--border-light);
     text-align: center;
-}
-
-.metrics-grid strong {
+  }
+  
+  .metrics-grid strong {
     display: block;
     font-size: 14px;
     color: var(--text-muted);
     margin-bottom: 6px;
-}
-
-.metrics-grid div div {
+  }
+  
+  .metrics-grid div div {
     font-size: 20px;
     font-weight: 700;
     color: var(--accent-purple);
-}
-
-/* ---------- CHARTS ---------- */
-canvas {
+  }
+  
+  /* ---------- CHARTS ---------- */
+  canvas {
     width: 100% !important;
     height: 320px !important;
     margin-top: 10px;
-    background: white;
+    background: #FFFFFF;
     border-radius: var(--radius);
     border: 1px solid var(--border-light);
     padding: 10px;
     box-shadow: var(--shadow-soft);
-}
-
-/* ---------- RESPONSIVE FIXES ---------- */
-@media (max-width: 700px) {
+  }
+  
+  /* ---------- RESPONSIVE FIXES ---------- */
+  @media (max-width: 700px) {
     .metrics-grid {
-        grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
-}
+  }
+  

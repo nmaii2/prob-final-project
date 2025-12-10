@@ -72,7 +72,6 @@ def run_simulation(
         w_high * raw_high
     )
 
-    # Downsample to one point per year (exact index)
     indices = np.linspace(0, steps, years + 1, dtype=int)
     sample_paths = portfolio_raw[:, indices]
 
@@ -89,7 +88,6 @@ def run_simulation(
         w_high * R_high
     )
 
-    # Shock report
     shock_summary = {
         "auto_shock": auto_shock,
         "applied_to_all": False,
@@ -98,9 +96,7 @@ def run_simulation(
         "count_boom": 0
     }
 
-    # ------------------------------------------------------------
     # Full manual shock
-    # ------------------------------------------------------------
     if shock_type in ("crash", "boom"):
         shock_summary["applied_to_all"] = True
 
@@ -113,9 +109,7 @@ def run_simulation(
 
         shock_summary["total_shocked"] = sims
 
-    # ------------------------------------------------------------
     # Auto shock (per simulation)
-    # ------------------------------------------------------------
     elif auto_shock:
         mask = rng.random(sims) < shock_prob
         shocked_count = int(mask.sum())
@@ -137,9 +131,7 @@ def run_simulation(
 
             portfolio_returns *= adj
 
-    # ------------------------------------------------------------
     # Terminal wealth after T years
-    # ------------------------------------------------------------
     final_wealth = wealth * np.exp(portfolio_returns * years)
 
     return {

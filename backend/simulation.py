@@ -77,9 +77,9 @@ def run_simulation(
     # ------------------------------
     steps_per_year = 252
 
-    low_paths = generate_gbm_paths(100, mu_low, sigma_low, years, steps_per_year, 20, rng)
-    med_paths = generate_gbm_paths(100, mu_med, sigma_med, years, steps_per_year, 20, rng)
-    high_paths = generate_gbm_paths(100, mu_high, sigma_high, years, steps_per_year, 20, rng)
+    low_paths = generate_gbm_paths(100, mu_low, sigma_low, years, steps_per_year, 50, rng)
+    med_paths = generate_gbm_paths(100, mu_med, sigma_med, years, steps_per_year, 50, rng)
+    high_paths = generate_gbm_paths(100, mu_high, sigma_high, years, steps_per_year, 50, rng)
 
     # Weighted portfolio sample chart paths
     sample_paths = (

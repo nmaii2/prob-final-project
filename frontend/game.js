@@ -8,16 +8,25 @@ const fmtMoney = (x) =>
   Number(x).toLocaleString(undefined, { maximumFractionDigits: 2 });
 const fmtPct = (v) => (v * 100).toFixed(1) + "%";
 
-// ---------- DOM Elements ----------
+
+// ===============================
+// DOM Elements
+// ===============================
+
+// Allocation sliders
 const lowSlider = $("lowSlider");
 const medSlider = $("medSlider");
 const highSlider = $("highSlider");
 
+// Slider labels
 const lowLabel = $("lowLabel");
 const medLabel = $("medLabel");
 const highLabel = $("highLabel");
 
+// Time horizon
 const horizonSelect = $("horizonSelect");
+
+// Main button
 const gambleBtn = $("gambleBtn");
 
 // Metrics
@@ -26,26 +35,35 @@ const probLossEl = $("probLoss");
 const probRuinEl = $("probRuin");
 const var5El = $("var5");
 
-const statusEl = $("statusText"); // optional
+// Status text
+const statusEl = $("statusText");
+
+// Custom risk inputs (μ and σ), in PERCENT
+const muLowInput = $("muLowInput");
+const sigmaLowInput = $("sigmaLowInput");
+const muMedInput = $("muMedInput");
+const sigmaMedInput = $("sigmaMedInput");
+const muHighInput = $("muHighInput");
+const sigmaHighInput = $("sigmaHighInput");
 
 
-// ------------------------------------------------------
-// Start background music only after *first user interaction*
-// ------------------------------------------------------
+// ===============================
+// Sound: start ambient on first click
+// ===============================
 document.addEventListener(
   "click",
   () => {
-    if (window.SoundEngine) {
-      SoundEngine.startBackground();
+    if (window.SoundEngine && typeof SoundEngine.startAmbient === "function") {
+      SoundEngine.startAmbient();
     }
   },
   { once: true }
 );
 
 
-// ------------------------------------------------------
-// Update slider labels as normalized %
-// ------------------------------------------------------
+// ===============================
+// Slider label updates
+// ===============================
 function updateAllocationLabels() {
   const L = Number(lowSlider.value || 0);
   const M = Number(medSlider.value || 0);
@@ -59,15 +77,15 @@ function updateAllocationLabels() {
 }
 
 // Init labels + events
-[lowSlider, medSlider, highSlider].forEach((s) =>
-  s.addEventListener("input", updateAllocationLabels)
-);
+[lowSlider, medSlider, highSlider].forEach((s) => {
+  if (s) s.addEventListener("input", updateAllocationLabels);
+});
 updateAllocationLabels();
 
 
-// ------------------------------------------------------
-// Read normalized weights
-// ------------------------------------------------------
+// ===============================
+// Read normalized weights (0–1)
+// ===============================
 function readWeights() {
   const L = Number(lowSlider.value || 0);
   const M = Number(medSlider.value || 0);
@@ -75,7 +93,9 @@ function readWeights() {
 
   const total = L + M + H;
 
-  if (total <= 0) return { w_low: 1, w_med: 0, w_high: 0 };
+  if (total <= 0) {
+    return { w_low: 1, w_med: 0, w_high: 0 };
+  }
 
   return {
     w_low: L / total,
@@ -85,11 +105,53 @@ function readWeights() {
 }
 
 
-// ------------------------------------------------------
+// ===============================
+// Read risk parameters (μ, σ) from inputs
+// Inputs are in %, backend needs decimals
+// ===============================
+function readRiskParams() {
+  // Fallback defaults (same as before)
+  const defaultMuLow = 4.0;
+  const defaultMuMed = 8.0;
+  const defaultMuHigh = 14.0;
+
+  const defaultSigmaLow = 6.0;
+  const defaultSigmaMed = 15.0;
+  const defaultSigmaHigh = 30.0;
+
+  const mu_low_pct =
+    parseFloat(muLowInput?.value) || defaultMuLow;
+  const mu_med_pct =
+    parseFloat(muMedInput?.value) || defaultMuMed;
+  const mu_high_pct =
+    parseFloat(muHighInput?.value) || defaultMuHigh;
+
+  const sigma_low_pct =
+    parseFloat(sigmaLowInput?.value) || defaultSigmaLow;
+  const sigma_med_pct =
+    parseFloat(sigmaMedInput?.value) || defaultSigmaMed;
+  const sigma_high_pct =
+    parseFloat(sigmaHighInput?.value) || defaultSigmaHigh;
+
+  // Convert % → decimal
+  return {
+    mu_low: mu_low_pct / 100,
+    mu_med: mu_med_pct / 100,
+    mu_high: mu_high_pct / 100,
+    sigma_low: sigma_low_pct / 100,
+    sigma_med: sigma_med_pct / 100,
+    sigma_high: sigma_high_pct / 100,
+  };
+}
+
+
+// ===============================
 // MAIN SIMULATION
-// ------------------------------------------------------
+// ===============================
 async function runGamble() {
-  if (window.SoundEngine) SoundEngine.playGamble();
+  if (window.SoundEngine && typeof SoundEngine.playGamble === "function") {
+    SoundEngine.playGamble();
+  }
 
   gambleBtn.disabled = true;
   const oldText = gambleBtn.textContent;
@@ -100,24 +162,31 @@ async function runGamble() {
   try {
     const wealth = 10000;
     const weights = readWeights();
-
-    const years = parseInt(horizonSelect.value, 10);
+    const years = parseInt(horizonSelect.value, 10) || 1;
     const sims = 3000;
 
-    // must match backend defaults
+    // Read custom risk inputs
+    const {
+      mu_low,
+      mu_med,
+      mu_high,
+      sigma_low,
+      sigma_med,
+      sigma_high,
+    } = readRiskParams();
+
     const payload = {
       wealth,
       w_low: weights.w_low,
       w_med: weights.w_med,
       w_high: weights.w_high,
 
-      mu_low: 0.04,
-      mu_med: 0.08,
-      mu_high: 0.14,
-
-      sigma_low: 0.06,
-      sigma_med: 0.15,
-      sigma_high: 0.30,
+      mu_low,
+      mu_med,
+      mu_high,
+      sigma_low,
+      sigma_med,
+      sigma_high,
 
       years,
       sims,
@@ -147,6 +216,7 @@ async function runGamble() {
 
     // ----- Charts -----
     if (typeof drawTimeSeries === "function") {
+      // sample_paths is array[20][years+1]
       drawTimeSeries(data.sample_paths, { years });
     }
 
@@ -154,13 +224,12 @@ async function runGamble() {
       drawHistogram(data.final_wealth_samples);
     }
 
-    // reward sound if profit
+    // Reward sound if expected > starting wealth
     if (window.SoundEngine && data.expected > wealth) {
       SoundEngine.playReward();
     }
 
     if (statusEl) statusEl.textContent = "Done! Charts updated.";
-
   } catch (err) {
     console.error(err);
     if (statusEl) statusEl.textContent = "Error: " + err.message;
@@ -171,8 +240,9 @@ async function runGamble() {
 }
 
 
-// ------------------------------------------------------
+// ===============================
 // Button wiring
-// ------------------------------------------------------
-gambleBtn.addEventListener("click", runGamble);
-
+// ===============================
+if (gambleBtn) {
+  gambleBtn.addEventListener("click", runGamble);
+}

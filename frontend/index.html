@@ -18,17 +18,18 @@
   <div class="container">
 
     <!-- Header -->
-    <h1 class="game-title">🎲 Monte Carlo Gamble Game</h1>
+    <h1 class="game-title">🎲 Monte Carlo Simulation </h1>
 
     <div class="grid-layout">
-
       <!-- ===================================== -->
       <!-- LEFT PANEL — Controls -->
       <!-- ===================================== -->
       <section class="card control-panel">
-
         <h2>Portfolio Setup</h2>
 
+        <!-- ========================= -->
+        <!-- Allocation Sliders        -->
+        <!-- ========================= -->
         <!-- LOW -->
         <label>
           Low-Risk Stock
@@ -52,7 +53,98 @@
 
         <div class="divider"></div>
 
-        <!-- Horizon -->
+        <!-- ========================= -->
+        <!-- Custom Risk Inputs        -->
+        <!-- ========================= -->
+        <h3 class="subheading">Custom Risk Settings</h3>
+        <p class="helper-text">
+          Adjust the <strong>expected return</strong> (μ) and <strong>volatility</strong> (σ) for each stock.
+          Values are annual, in %.
+        </p>
+
+        <!-- Low-Risk parameters -->
+        <div class="risk-row">
+          <div class="risk-col">
+            <label for="muLowInput">Low μ (Expected Return %)</label>
+            <input
+              id="muLowInput"
+              type="number"
+              min="-50"
+              max="50"
+              step="0.1"
+              value="4"
+            />
+          </div>
+          <div class="risk-col">
+            <label for="sigmaLowInput">Low σ (Volatility %)</label>
+            <input
+              id="sigmaLowInput"
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              value="6"
+            />
+          </div>
+        </div>
+
+        <!-- Medium-Risk parameters -->
+        <div class="risk-row">
+          <div class="risk-col">
+            <label for="muMedInput">Medium μ (Expected Return %)</label>
+            <input
+              id="muMedInput"
+              type="number"
+              min="-50"
+              max="50"
+              step="0.1"
+              value="8"
+            />
+          </div>
+          <div class="risk-col">
+            <label for="sigmaMedInput">Medium σ (Volatility %)</label>
+            <input
+              id="sigmaMedInput"
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              value="15"
+            />
+          </div>
+        </div>
+
+        <!-- High-Risk parameters -->
+        <div class="risk-row">
+          <div class="risk-col">
+            <label for="muHighInput">High μ (Expected Return %)</label>
+            <input
+              id="muHighInput"
+              type="number"
+              min="-50"
+              max="50"
+              step="0.1"
+              value="14"
+            />
+          </div>
+          <div class="risk-col">
+            <label for="sigmaHighInput">High σ (Volatility %)</label>
+            <input
+              id="sigmaHighInput"
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              value="30"
+            />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ========================= -->
+        <!-- Time Horizon              -->
+        <!-- ========================= -->
         <label for="horizonSelect">Time Horizon</label>
         <select id="horizonSelect">
           <option value="1">1 Year</option>
@@ -68,10 +160,8 @@
         <p id="statusText" class="status-line"></p>
       </section>
 
-
-
       <!-- ===================================== -->
-      <!-- RIGHT PANEL — CHARTS AND METRICS -->
+      <!-- RIGHT PANEL — Charts and Metrics -->
       <!-- ===================================== -->
       <div class="right-panel">
 
@@ -114,24 +204,17 @@
           </div>
         </section>
 
-      </div> <!-- end right column -->
-
-    </div> <!-- end grid -->
-
+      </div> <!-- end right-panel -->
+    </div> <!-- end grid-layout -->
   </div> <!-- end container -->
 
-
-
   <!-- ===================================================== -->
-  <!-- AUDIO FILES (used by game.js) -->
+  <!-- AUDIO (referenced by sound.js / game.js if needed)   -->
   <!-- ===================================================== -->
-  <!-- These are only references — the JS loads them manually -->
   <audio id="ambient-sound" src="assets/sounds/ambient-loop.mp3"></audio>
 
-
-
   <!-- ===================================================== -->
-  <!-- JS SCRIPTS -->
+  <!-- JS SCRIPTS                                           -->
   <!-- ===================================================== -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="charts.js"></script>
@@ -140,3 +223,4 @@
 
 </body>
 </html>
+
